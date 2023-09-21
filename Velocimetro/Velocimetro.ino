@@ -28,33 +28,24 @@ void setup() {
 }
 
 void loop() {
-  meuServo.write(transformaVelocidade(velocidade));
   bool sensorValue = !(digitalRead(sensorPin));  // Lê o valor do sensor Hall
-  
-
   if(sensorValue){
     delay(50);
     sensorValue = !(digitalRead(sensorPin));
-    if(sensorValue){}
-
-    
-    else{
+    if(!sensorValue){
       Serial.println("CUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCUCU");
       elapsedTime = millis();
       velocidade = (1.63 / ((elapsedTime - startTime)/1000.00)*3.6);
 
       startTime = millis(); 
+
     }
+
   }
-    lcd.setCursor(0,0);
-    lcd.print((int)(velocidade));
-    lcd.print("Km/h");
-
-  
-
+  lcd.setCursor(0,0);
+  lcd.print((int)(velocidade));
+  lcd.print("Km/h");
   Serial.println(velocidade * 3.6);
   Serial.println("Km/h");
-
-  
-
+  meuServo.write(transformaVelocidade(velocidade));
 }
