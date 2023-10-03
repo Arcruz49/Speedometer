@@ -6,10 +6,6 @@ const int sensorPin = 3;  // Conecte o pino D0 do sensor Hall ao pino digital 3
 Servo meuServo;  // Crie um objeto Servo
 LiquidCrystal_I2C lcd(0x27,16,2); 
 
-int posInicial = 0;    // Posição inicial do servo
-int posFinal = 180;    // Posição final do servo
-int passo = 1;         // O quanto o servo se move a cada passo
-int delayEntrePassos = 10;  // Tempo de espera entre cada passo (em milissegundos)
 double velocMaxima = 50;
 double velocidade = 0;
 unsigned long startTime = 0;  // Variável para armazenar o tempo de início
