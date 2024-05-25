@@ -47,8 +47,10 @@ void loop() {
       if (count == 2) {
         timenow = millis();
         tempo = timenow - timeold;
+
         rpm = getRpm(tempo);
         speed = getSPeed(rpm, circ);
+        
         display.clearDisplay();  
         
         printRpm();
@@ -69,17 +71,9 @@ void loop() {
 
   if (count == 1 && rpm < 20) {
     delay(100);
-    Serial.print("RPM: ");
-    Serial.println(0);
-        display.clearDisplay();  
-        display.setCursor(0, 0);
-        display.print("RPM: ");
-        display.println(0); 
-        display.setCursor(0, 25);
-        display.print("KM/H: ");
-        display.println(0); 
-        display.display();
+    defaultPrint();
   } 
+
   lastSensorState = sensorState;
 }
 
@@ -102,4 +96,17 @@ void printKM(){
   display.setCursor(0, 25);
   display.print("KM/H: ");
   display.println(speed); 
+}
+
+void defaultPrint(){
+  Serial.print("RPM: ");
+  Serial.println(0);
+  display.clearDisplay();  
+  display.setCursor(0, 0);
+  display.print("RPM: ");
+  display.println(0); 
+  display.setCursor(0, 25);
+  display.print("KM/H: ");
+  display.println(0); 
+  display.display();
 }
