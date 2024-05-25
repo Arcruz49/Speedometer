@@ -24,14 +24,14 @@ double speed = 0;
 
 
 void setup() {
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // Inicializa a tela OLED
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
   display.setCursor(0, 0);
   
   pinMode(sensorPin, INPUT);
-  Serial.begin(9600); //Enviar e receber dados em 9600 baud
+  Serial.begin(9600); 
   Serial.println("Gerando valores sequenciais");
 }
 
