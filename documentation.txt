@@ -1,0 +1,14 @@
+OLED Display
+
+SDA (OLED) -> GPIO 21 (ESP32)
+SCL (OLED) -> GPIO 22 (ESP32)
+VCC (OLED) -> 3.3V (ou 5V) (ESP32)
+GND (OLED) -> GND (ESP32)
+
+
+Sensor Hall
+
+D0 (Sensor) -> GPIO 2 (ESP32)
+A0 (Sensor) -> GPIO 34 (ESP32) (ou qualquer outro pino ADC do ESP32)
+VCC (Sensor) -> 3.3V (ou 5V) (ESP32)
+GND (Sensor) -> GND (ESP32)
