@@ -20,12 +20,11 @@ int analogPin = 34;
 unsigned long timenow = 0;
 unsigned long timeold = 0;
 int start = 0;
-const double circ = 3.33; 
+const double circ = 166.5; 
 double speed = 0;
 
 void setup() {
   Wire.begin(I2C_SDA, I2C_SCL);
-
 
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { 
     Serial.println(F("SSD1306 allocation failed"));
@@ -97,11 +96,19 @@ void loop() {
 }
 
 unsigned long getRpm(unsigned long tempo) {
-  return 60000 / tempo;
+  double periodMinutes = tempo / 60000.0;
+  
+  unsigned long rpm = 1 / periodMinutes;
+  
+  return rpm;
 }
 
 double getSpeed(unsigned long rpm, double circ) {
-  return ((rpm * circ) / 60) * 3.6;
+  //Velocidade do veículo (km/h) = (RPM das rodas × diâmetro do pneu (cm) × π × 60) / 10^5
+
+  double speedKmPerHour = (rpm * circ * 60) / 100000;
+
+  return speedKmPerHour;
 }
 
 void printRpm() {
@@ -113,7 +120,10 @@ void printRpm() {
 void printKM() {
   display.setCursor(0, 25);
   display.print("KM/H: ");
-  display.println(speed); 
+  char speedStr[6]; 
+  dtostrf(speed, 4, 1, speedStr); 
+  display.print(speedStr); 
+  display.print(" "); 
 }
 
 void defaultPrint() {
