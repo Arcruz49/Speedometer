@@ -2,7 +2,6 @@
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 
-// Defina os pinos de I2C para o ESP32
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
