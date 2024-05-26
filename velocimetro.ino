@@ -71,8 +71,8 @@ void loop() {
         
         display.clearDisplay();  
         
-        printRpm();
-        printKM();
+        drawSpeedometer();
+        drawRPM();
 
         display.display(); 
 
@@ -108,36 +108,43 @@ unsigned long getRpm(unsigned long tempo) {
 }
 
 double getSpeed(unsigned long rpm, double circ) {
-  //Velocidade do veículo (km/h) = (RPM das rodas × diâmetro do pneu (cm) × π × 60) / 10^5
-  //double speedKmPerHour = (rpm * circ * 60) / 100000;
-  double speedKmPerHour = rpm / 10.0;
-
+  double speedKmPerHour = (rpm * circ * 60) / 100000.0;
   return speedKmPerHour;
 }
 
-void printRpm() {
+void drawRPM() {
+  display.setTextSize(1);
   display.setCursor(0, 0);
   display.print("RPM: ");
   display.println(rpm); 
 }
 
-void printKM() {
-  display.setCursor(0, 25);
-  display.print("KM/H: ");
-  char speedStr[6]; 
-  dtostrf(speed, 4, 1, speedStr); 
-  display.print(speedStr); 
-  display.print(" "); 
+void drawSpeedometer() {
+  display.drawRect(0, 20, 128, 20, WHITE);
+  int speedBarLength = map(speed, 0, 60, 0, 128); // Mapeia a velocidade para o comprimento da barra com máximo de 60 km/h
+  display.fillRect(0, 20, speedBarLength, 20, WHITE);
+  
+  display.setCursor(0, 45);
+  display.setTextSize(2);
+  display.print(speed, 1);
+  display.print(" km/h");
 }
 
 void defaultPrint() {
-  display.clearDisplay();  
+  display.clearDisplay();
+  
+  display.setTextSize(1);
   display.setCursor(0, 0);
   display.print("RPM: ");
   display.println(0); 
-  display.setCursor(0, 25);
-  display.print("KM/H: ");
-  display.println(0); 
+  
+  display.drawRect(0, 20, 128, 20, WHITE);
+  display.fillRect(0, 20, 0, 20, WHITE); // Barra de velocidade com comprimento zero
+  
+  display.setCursor(0, 45);
+  display.setTextSize(2);
+  display.print("0.0 km/h");
+  
   display.display();
 }
 
