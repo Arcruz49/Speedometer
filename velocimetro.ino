@@ -32,9 +32,13 @@ void setup() {
   }
   
   display.clearDisplay();
+  display.display();
   display.setTextColor(WHITE);
-  display.setTextSize(2);
+  display.setTextSize(1);
   display.setCursor(0, 0);
+
+  starting();
+  defaultPrint();
   
   pinMode(sensorPin, INPUT);
   pinMode(analogPin, INPUT); 
@@ -105,8 +109,8 @@ unsigned long getRpm(unsigned long tempo) {
 
 double getSpeed(unsigned long rpm, double circ) {
   //Velocidade do veículo (km/h) = (RPM das rodas × diâmetro do pneu (cm) × π × 60) / 10^5
-
-  double speedKmPerHour = (rpm * circ * 60) / 100000;
+  //double speedKmPerHour = (rpm * circ * 60) / 100000;
+  double speedKmPerHour = rpm / 10.0;
 
   return speedKmPerHour;
 }
@@ -135,4 +139,18 @@ void defaultPrint() {
   display.print("KM/H: ");
   display.println(0); 
   display.display();
+}
+
+void starting() {
+  String txt = "starting";
+  display.print(txt);
+  for (int i = 0; i <= 3; i++) {
+    display.setCursor(0, 0);
+    display.print(txt);      
+    display.display();       
+    delay(800);              
+    txt = txt + ".";         
+    display.clearDisplay();
+    display.display();
+  }
 }
