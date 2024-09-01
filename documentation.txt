@@ -8,7 +8,7 @@ GND (OLED) -> GND (ESP32)
 
 Sensor Hall
 
-D0 (Sensor) -> GPIO 2 (ESP32)
+D0 (Sensor) -> GPIO 4 (ESP32)
 A0 (Sensor) -> GPIO 34 (ESP32) (ou qualquer outro pino ADC do ESP32)
 VCC (Sensor) -> 3.3V (ou 5V) (ESP32)
 GND (Sensor) -> GND (ESP32)
