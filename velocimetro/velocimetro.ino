@@ -1,14 +1,12 @@
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 #include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-#define OLED_RESET -1
-#define I2C_SDA 21
-#define I2C_SCL 22
+// Define o número de colunas e linhas do LCD
+int lcdColumns = 16;
+int lcdRows = 2;
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+// Define o endereço do display LCD, número de colunas e linhas
+LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
 
 unsigned long tempo = 0;
 int count = 0;
@@ -24,18 +22,13 @@ const double circ = 166.5;
 double speed = 0;
 
 void setup() {
-  Wire.begin(I2C_SDA, I2C_SCL);
-
-  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { 
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;); 
-  }
+  // Inicializa a comunicação I2C nos pinos GPIO 18 (SDA) e 19 (SCL)
+  Wire.begin(18, 19);
   
-  display.clearDisplay();
-  display.display();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(0, 0);
+  // Inicializa o display LCD
+  lcd.init();
+  // Liga a luz de fundo do LCD
+  lcd.backlight();
 
   starting();
   defaultPrint();
@@ -47,7 +40,6 @@ void setup() {
 }
 
 void loop() {
-  display.clearDisplay(); 
   sensorState = digitalRead(sensorPin);
   int analogValue = analogRead(analogPin); 
 
@@ -69,12 +61,8 @@ void loop() {
           speed = 0;
         }
         
-        display.clearDisplay();  
-        
         drawSpeedometer();
         drawRPM();
-
-        display.display(); 
 
         timeold = timenow;
         count = 1;
@@ -113,51 +101,30 @@ double getSpeed(unsigned long rpm, double circ) {
 }
 
 void drawRPM() {
-  display.setTextSize(1);
-  display.setCursor(0, 0);
-  display.print("RPM: ");
-  display.println(rpm); 
+  lcd.setCursor(0, 0);
+  lcd.print("RPM: ");
+  lcd.print(rpm);
 }
 
 void drawSpeedometer() {
-  display.drawRect(0, 20, 128, 20, WHITE);
-  int speedBarLength = map(speed, 0, 60, 0, 128); // Mapeia a velocidade para o comprimento da barra com máximo de 60 km/h
-  display.fillRect(0, 20, speedBarLength, 20, WHITE);
-  
-  display.setCursor(0, 45);
-  display.setTextSize(2);
-  display.print(speed, 1);
-  display.print(" km/h");
+  lcd.setCursor(0, 1);
+  lcd.print("Speed: ");
+  lcd.print(speed, 1);
+  lcd.print(" km/h");
 }
 
 void defaultPrint() {
-  display.clearDisplay();
+  lcd.clear();
   
-  display.setTextSize(1);
-  display.setCursor(0, 0);
-  display.print("RPM: ");
-  display.println(0); 
+  lcd.setCursor(0, 0);
+  lcd.print("RPM: 0");
   
-  display.drawRect(0, 20, 128, 20, WHITE);
-  display.fillRect(0, 20, 0, 20, WHITE); // Barra de velocidade com comprimento zero
-  
-  display.setCursor(0, 45);
-  display.setTextSize(2);
-  display.print("0.0 km/h");
-  
-  display.display();
+  lcd.setCursor(0, 1);
+  lcd.print("Speed: 0.0 km/h");
 }
 
 void starting() {
-  String txt = "starting";
-  display.print(txt);
-  for (int i = 0; i <= 3; i++) {
-    display.setCursor(0, 0);
-    display.print(txt);      
-    display.display();       
-    delay(800);              
-    txt = txt + ".";         
-    display.clearDisplay();
-    display.display();
-  }
+  lcd.setCursor(0, 0);
+  lcd.print("starting");
+  delay(3200); // Delay para simular o tempo do processo de inicialização
 }
